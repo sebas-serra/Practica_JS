@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pracyica_js</title>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Pokememory</h1>
+    </header>
+  
+    <main>
+
+      <section id="register-view">
+        <form id="user-form">
+          <h2>Registro</h2>
+          <label for="username">Nombre de usuario</label>
+          <input type="text" id="username" name="username" placeholder="Tu nombre de usuario">
+  
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" placeholder="tucorreo@coso.net">
+  
+          <button type="submit" id="register-btn">Entrar</button>
+        </form>
+      </section>
+
+  
+      <div id="game" hidden>
+
+        <section id="game-panel">
+          <form id="game-form" novalidate>
+            <label for="cards-number">Número de cartas (par y positivo)</label>
+            <input type="number" id="cards-number" name="cards-number" placeholder="Ej: 8">
+            <button type="submit" id="play-btn">Jugar</button>
+          </form>
+  
+          <p>Tiempo: <span id="timer">0m 0s</span></p>
+  
+          <div id="game-board"></div>
+        </section>
+  
+
+
+        <aside id="ranking-panel">
+          <h2>Ranking</h2>
+          <div id="ranking">
+            <table>
+              <thead>
+                <tr>
+                  <th>Posición</th>
+                  <th>Username</th>
+                  <th>Mail</th>
+                  <th>Tiempo</th>
+                  <th>Número de cartas</th>
+                </tr>
+              </thead>
+              <tbody id="ranking-body"></tbody>
+            </table>
+          </div>
+          <button type="button" id="logout-btn">Cerrar sesión</button>
+        </aside>
+      </div>
+    </main>
+  
+
+
+    <dialog id="modal">
+      <p id="modal-message"></p>
+      <form method="dialog">
+        <button type="submit" id="modal-close">Cerrar</button>
+      </form>
+    </dialog>
+  </body>
+</html>
