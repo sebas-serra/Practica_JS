@@ -12,7 +12,10 @@ export async function buscarUsuarioPorEmail(email) {
 export async function crearUsuario(username, email) {
   const respuesta = await fetch(`${DB_URL}/users.json`, {
     method: 'POST',
-    body: JSON.stringify({ username, email })
+
+    body: JSON.stringify({ username, 
+      email, 
+      fechaRegistro: new Date().toISOString() })
   });
   const datos = await respuesta.json();
   return datos.name;
@@ -21,7 +24,10 @@ export async function crearUsuario(username, email) {
 export async function actualizarUsername(id, username) {
   await fetch(`${DB_URL}/users/${id}.json`, {
     method: 'PATCH',
-    body: JSON.stringify({ username })
+    body: JSON.stringify({ 
+      username,
+      fechaActualizacion: new Date().toISOString()
+     })
   });
   return id;
 }
