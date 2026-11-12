@@ -15,7 +15,7 @@ export async function crearUsuario(username, email) {
     body: JSON.stringify({ username, email })
   });
   const datos = await respuesta.json();
-  return datos.name; // Firebase devuelve el id nuevo en "name"
+  return datos.name;
 }
 
 export async function actualizarUsername(id, username) {
