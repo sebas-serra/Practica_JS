@@ -1,6 +1,5 @@
 const POKEAPI_URL = 'https://pokeapi.co/api/v2/pokemon';
-const MAX_POKEMON = 151; 
-
+export const MAX_POKEMON = 151;
 function generarIdsAleatorios(cantidad) {
   const ids = new Set();
   while (ids.size < cantidad) {
