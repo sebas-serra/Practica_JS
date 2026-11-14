@@ -1,11 +1,8 @@
 import { buscarUsuarioPorEmail, crearUsuario, actualizarUsername } from './api.js';
 
 export function iniciarRegistro(alRegistrar) {
-  const formulario = document.getElementById('user-form');
-
-  formulario.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
+  document.getElementById('user-form').addEventListener('submit', async (evento) => {
+    evento.preventDefault();
     const username = document.getElementById('username').value.trim();
     const email = document.getElementById('email').value.trim();
 

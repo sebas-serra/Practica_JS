@@ -5,8 +5,7 @@ let intervalo = null;
 let segundos = 0;
 let primeraCarta = null;
 let bloqueado = false;
-let parejasEncontradas = 0;
-let totalParejas = 0;
+let errores = 0;
 
 function mostrarError(mensaje) {
   document.getElementById('modal-message').textContent = mensaje;
@@ -19,7 +18,6 @@ function esValido(valor) {
     && numero % 2 === 0 && numero <= MAX_POKEMON * 2;
 }
 
-
 function detenerTemporizador() {
   clearInterval(intervalo);
 }
@@ -28,99 +26,88 @@ function iniciarTemporizador() {
   detenerTemporizador();
   segundos = 0;
   const timer = document.getElementById('timer');
-  timer.textContent = formatearTiempo(segundos);
+  timer.textContent = formatearTiempo(0);
   intervalo = setInterval(() => {
-    segundos++;
-    timer.textContent = formatearTiempo(segundos);
+    timer.textContent = formatearTiempo(++segundos);
   }, 1000);
 }
 
-function girar(carta) {
-  carta.classList.add('flipped');
-  carta.style.backgroundImage = `url(${carta.dataset.imagen})`;
-}
-
-function ocultar(carta) {
-  carta.classList.remove('flipped');
-  carta.style.backgroundImage = '';
+// Muestra u oculta la imagen de una carta
+function mostrar(carta, visible) {
+  carta.classList.toggle('flipped', visible);
+  carta.style.backgroundImage = visible ? `url(${carta.dataset.imagen})` : '';
 }
 
 function pintarTablero(cartas) {
-  const tablero = document.getElementById('game-board');
-  tablero.innerHTML = '';
-  cartas.forEach((carta) => {
-    const elemento = document.createElement('div');
-    elemento.classList.add('card');
-    elemento.dataset.id = carta.id;
-    elemento.dataset.imagen = carta.imagen;
-    tablero.appendChild(elemento);
+  const elementos = cartas.map(({ id, imagen }) => {
+    const carta = document.createElement('div');
+    carta.className = 'card';
+    carta.dataset.id = id;
+    carta.dataset.imagen = imagen;
+    return carta;
   });
+  document.getElementById('game-board').replaceChildren(...elementos);
 }
 
 function manejarClic(evento, alGanar) {
   const carta = evento.target.closest('.card');
   if (!carta || bloqueado || carta.classList.contains('flipped')) return;
 
-  girar(carta);
-
+  mostrar(carta, true);
   if (!primeraCarta) {
     primeraCarta = carta;
     return;
   }
 
-  if (primeraCarta.dataset.id === carta.dataset.id) {
-    primeraCarta.classList.add('matched');
-    carta.classList.add('matched');
-    primeraCarta = null;
-    parejasEncontradas++;
+  const anterior = primeraCarta;
+  primeraCarta = null;
 
-    if (parejasEncontradas === totalParejas) {
+  if (anterior.dataset.id === carta.dataset.id) {
+    anterior.classList.add('matched');
+    carta.classList.add('matched');
+    // Si ya no quedan cartas sin emparejar, se ha ganado
+    if (!document.querySelector('.card:not(.matched)')) {
       detenerTemporizador();
-      alGanar(segundos, totalParejas * 2);
+      alGanar(segundos, document.querySelectorAll('.card').length, errores);
     }
-  } else {
-    bloqueado = true;
-    const anterior = primeraCarta;
-    primeraCarta = null;
-    setTimeout(() => {
-      ocultar(anterior);
-      ocultar(carta);
-      bloqueado = false;
-    }, 800);
+    return;
   }
+
+  errores++;
+  bloqueado = true;
+  setTimeout(() => {
+    mostrar(anterior, false);
+    mostrar(carta, false);
+    bloqueado = false;
+  }, 800);
 }
 
 async function empezarPartida(numeroCartas) {
   detenerTemporizador();
   primeraCarta = null;
   bloqueado = false;
-  parejasEncontradas = 0;
-  totalParejas = numeroCartas / 2;
+  errores = 0;
 
   try {
-    const cartas = await obtenerCartas(numeroCartas);
-    pintarTablero(cartas);
+    pintarTablero(await obtenerCartas(numeroCartas));
     iniciarTemporizador();
     document.getElementById('play-btn').textContent = 'Volver a jugar';
-  } catch (error) {
+  } catch {
     mostrarError('No se pudieron cargar los pokémon. Inténtalo de nuevo.');
   }
 }
 
 export function iniciarJuego(alGanar) {
-  const formulario = document.getElementById('game-form');
-  const tablero = document.getElementById('game-board');
-
-  formulario.addEventListener('submit', (evento) => {
+  document.getElementById('game-form').addEventListener('submit', (evento) => {
     evento.preventDefault();
     const valor = document.getElementById('cards-number').value.trim();
 
-    if (!esValido(valor)) {
+    if (esValido(valor)) {
+      empezarPartida(Number(valor));
+    } else {
       mostrarError('Introduce un número entero, positivo y par de cartas.');
-      return;
     }
-    empezarPartida(Number(valor));
   });
 
-  tablero.addEventListener('click', (evento) => manejarClic(evento, alGanar));
+  document.getElementById('game-board').addEventListener('click', (evento) => manejarClic(evento, alGanar));
 }

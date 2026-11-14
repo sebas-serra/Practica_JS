@@ -10,23 +10,20 @@ function mostrarVista() {
   if (hayUsuario) cargarRanking();
 }
 
-async function alGanar(segundos, numeroCartas) {
+async function alGanar(segundos, numeroCartas, errores) {
   try {
-    const id = await guardarPartida(sessionStorage.getItem('user'), segundos, numeroCartas);
-    await cargarRanking(id); 
+    const id = await guardarPartida(sessionStorage.getItem('user'), segundos, numeroCartas, errores);
+    await cargarRanking(id);
   } catch (error) {
     console.error(error);
   }
 }
 
-function iniciarLogout() {
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    sessionStorage.removeItem('user');
-    location.reload();
-  });
-}
+document.getElementById('logout-btn').addEventListener('click', () => {
+  sessionStorage.removeItem('user');
+  location.reload();
+});
 
 iniciarRegistro(mostrarVista);
 iniciarJuego(alGanar);
-iniciarLogout();
 mostrarVista();
