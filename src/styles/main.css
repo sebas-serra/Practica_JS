@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Pokemon Solid';
+  src: url('../fonts/Pokemon Solid.ttf') format('truetype');
+  font-display: swap;
+}
+
 [hidden] {
   display: none !important;
 }
@@ -20,7 +26,13 @@ body {
 
 header h1 {
   margin: 1.5rem 0 1rem;
-  letter-spacing: 2px;
+  font-family: 'Pokemon Solid', Arial, sans-serif;
+  font-size: 3.5rem;
+  font-weight: normal;
+  letter-spacing: 4px;
+  color: #ffcb05;                          /* amarillo del logo */
+  -webkit-text-stroke: 3px #3b4cca;        /* borde azul del logo */
+  paint-order: stroke fill;                /* el borde queda por fuera */
 }
 
 main {
