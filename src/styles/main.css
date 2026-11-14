@@ -2,33 +2,116 @@
   display: none !important;
 }
 
-#game {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0a1a3f;       /* azul oscuro */
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+header h1 {
+  margin: 1.5rem 0 1rem;
+  letter-spacing: 2px;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+input {
+  padding: 0.5rem 0.8rem;
+  border: 2px solid #3b4cca;
+  border-radius: 6px;
+  background-color: #12296b;
+  color: #fff;
+  text-align: center;
+}
+
+input::placeholder {
+  color: #9aa8d6;
+}
+
+button {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #ffcb05;
+  color: #0a1a3f;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ffd93d;
+}
+
+#register-view {
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #12296b;
+}
+
+/* Vista del juego */
+#game {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  width: 100%;
+}
+
+#game-panel,
+#ranking-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tablero y cartas */
 #game-board {
   display: grid;
-  grid-template-columns: repeat(4, 100px);
+  grid-template-columns: repeat(6, 100px);
   gap: 10px;
+  justify-content: center;
   margin-top: 1rem;
 }
 
 .card {
   width: 100px;
   height: 100px;
-  background-color: #3b4cca;
+  background-color: #3b4cca;       /* cara boca abajo */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  border: 2px solid #222;
+  border: 2px solid #ffcb05;
   border-radius: 8px;
   cursor: pointer;
 }
 
 .card.flipped {
-  background-color: #fff; 
+  background-color: #fff;          /* cara boca arriba */
+  animation: girar 0.4s ease;
 }
 
 .card.matched {
@@ -36,6 +119,50 @@
   cursor: default;
 }
 
+@keyframes girar {
+  from {
+    transform: perspective(600px) rotateY(90deg);
+  }
+  to {
+    transform: perspective(600px) rotateY(0deg);
+  }
+}
+
+/* Ranking */
+table {
+  border-collapse: collapse;
+  background-color: #12296b;
+}
+
+th,
+td {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid #3b4cca;
+}
+
+th {
+  background-color: #3b4cca;
+}
+
 .highlight {
   background-color: yellow;
+  color: #0a1a3f;
+}
+
+#logout-btn {
+  margin-top: 1rem;
+}
+
+/* Modal de errores */
+dialog {
+  padding: 1.5rem 2rem;
+  border: 3px solid #ffcb05;
+  border-radius: 12px;
+  background-color: #12296b;
+  color: #fff;
+  text-align: center;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
 }
