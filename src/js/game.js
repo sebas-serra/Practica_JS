@@ -1,4 +1,5 @@
 import { obtenerCartas, MAX_POKEMON } from './pokeapi.js';
+import { formatearTiempo } from './utils.js';
 
 let intervalo = null;
 let segundos = 0;
@@ -18,9 +19,6 @@ function esValido(valor) {
     && numero % 2 === 0 && numero <= MAX_POKEMON * 2;
 }
 
-function formatearTiempo(total) {
-  return `${Math.floor(total / 60)}m ${total % 60}s`;
-}
 
 function detenerTemporizador() {
   clearInterval(intervalo);

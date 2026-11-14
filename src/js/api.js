@@ -31,3 +31,27 @@ export async function actualizarUsername(id, username) {
   });
   return id;
 }
+
+export async function guardarPartida(userId, tiempo, cartas) {
+  const respuesta = await fetch(`${DB_URL}/ranking.json`, {
+    method: 'POST',
+    body: JSON.stringify({ userId, tiempo, cartas })
+  });
+  if (!respuesta.ok) throw new Error('Error al guardar la partida');
+  const datos = await respuesta.json();
+  return datos.name; // id de la partida recién creada
+}
+
+export async function obtenerRanking() {
+  const respuesta = await fetch(`${DB_URL}/ranking.json`);
+  if (!respuesta.ok) throw new Error('Error al leer el ranking');
+  const datos = await respuesta.json();
+  if (!datos) return [];
+  return Object.entries(datos).map(([id, partida]) => ({ id, ...partida }));
+}
+
+export async function obtenerUsuarios() {
+  const respuesta = await fetch(`${DB_URL}/users.json`);
+  if (!respuesta.ok) throw new Error('Error al leer los usuarios');
+  return (await respuesta.json()) ?? {};
+}
