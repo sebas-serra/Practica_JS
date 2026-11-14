@@ -1,0 +1,41 @@
+[hidden] {
+  display: none !important;
+}
+
+#game {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.card {
+  width: 100px;
+  height: 100px;
+  background-color: #3b4cca;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid #222;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.card.flipped {
+  background-color: #fff; 
+}
+
+.card.matched {
+  background-color: #7bd88f;
+  cursor: default;
+}
+
+.highlight {
+  background-color: yellow;
+}
